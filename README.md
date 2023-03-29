@@ -1,1 +1,13 @@
-# laravel-centre-d-appel
+# laravel-api
+
+## Project setup
+
+```
+composer update
+```
+
+### run the server
+
+```
+php artisan serve
+```
