@@ -10,7 +10,7 @@ class PosteController extends Controller
     {
         $Numero= Poste::create([
             'user_id'=>$request['user_id'],
-            'num'=>$request['num']  
+             'num'=>$request['num']  
         ]);
             return response()->json(['Numero'=>$Numero]);
     }
