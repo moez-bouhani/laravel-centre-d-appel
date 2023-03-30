@@ -13,7 +13,7 @@ class NumeroController extends Controller
         $numeros=Numero::get();
         return response()->json(['numeros' =>$numeros], 200);
     }
-    public function store(Request $request)
+    public function store1(Request $request)
     {
         $Numero= Numero::create([
             'nom'=>$request['nom'],
@@ -30,6 +30,32 @@ class NumeroController extends Controller
             return response()->json(['Numero'=>$Numero]);
     }
 
+    //save multiple numeros at once
+    public function store(Request $request)
+    {
+    $numero=[];
+        if($request->numero)
+        {
+        $data = $this->validate($request, [
+            'numero' => 'required|array',
+            'numero.*.id' => 'integer',
+          ]);
+        foreach ($data['numero'] as $num) {
+            $numero[]= array(
+                'nom' => $num['nom'],
+                'prenom' => $num['prenom'],
+                'adresse' => $num['adresse'],
+                'telephone' => $num['telephone'],
+                'code_postale' => $num['code_postale'],
+                'date_nais' => $num['date_nais'],
+                'user_id' => $num['user_id'],
+                'statut'=>0
+                );
+        }
+        Numero::insert($numero);
+        return response()->json(['numero'=>$numero]);
+    }
+    }
     public function show($id)
     {
         $Numero=Numero::find($id)->get();
