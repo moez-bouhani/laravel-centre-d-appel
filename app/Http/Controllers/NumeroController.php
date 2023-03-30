@@ -13,23 +13,34 @@ class NumeroController extends Controller
         $numeros=Numero::get();
         return response()->json(['numeros' =>$numeros], 200);
     }
+
+
+    //save multiple numeros at once
     public function store(Request $request)
     {
-        $Numero= Numero::create([
-            'nom'=>$request['nom'],
-            'prenom'=>$request['prenom'],
-            'adresse'=>$request['adresse'],
-
-            'telephone'=>$request['telephone'],
-            'code_postale'=>$request['code_postale'],
-            'date_nais'=>$request['date_nais'],
-            'user_id'=>$request['user_id'],
-
-            'statut'=>0 // Not yet copied ( 1 ==> progress the copie ) (2 ==> finsh the copie)
-        ]);
-            return response()->json(['Numero'=>$Numero]);
+    $numero=[];
+        if($request->numero)
+        {
+        $data = $this->validate($request, [
+            'numero' => 'required|array',
+            'numero.*.id' => 'integer',
+          ]);
+        foreach ($data['numero'] as $num) {
+            $numero[]= array(
+                'nom' => $num['nom'],
+                'prenom' => $num['prenom'],
+                'adresse' => $num['adresse'],
+                'telephone' => $num['telephone'],
+                'code_postale' => $num['code_postale'],
+                'date_nais' => $num['date_nais'],
+                'user_id' => $num['user_id'],
+                'statut'=>0
+                );
+        }
+        Numero::insert($numero);
+        return response()->json(['numero'=>$numero]);
     }
-
+    }
     public function show($id)
     {
         $Numero=Numero::find($id)->get();
