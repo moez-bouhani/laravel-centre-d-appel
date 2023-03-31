@@ -18,7 +18,7 @@ class NumeroController extends Controller
     //save multiple numeros at once
     public function store(Request $request)
     {
-    $numero=[];
+        $numero=[];
         if($request->numero)
         {
         $data = $this->validate($request, [
